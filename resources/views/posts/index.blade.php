@@ -25,7 +25,7 @@
 							<a href="{{route('admin.posts.show', $post->id)}}">SHOW</a>
 						</td>
 						<td>
-							<a href="">EDIT</a>
+							<a href="{{ route('admin.posts.edit', $post->id) }}">EDIT</a>
 						</td>
 						<td>
 							<form action="">
