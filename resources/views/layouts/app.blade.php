@@ -17,6 +17,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
 	<!-- Styles -->
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css' integrity='sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==' crossorigin='anonymous'/>
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -26,6 +27,16 @@
 				<a class="navbar-brand" href="{{ url('/') }}">
 					{{ config('app.name', 'Laravel') }}
 				</a>
+				<li class="nav-item d-inline">
+					<a class="nav-link" href="{{ route('admin.posts.index') }}">
+						<i class="far fa-folder-open"></i> Archivio Post
+					</a>
+				</li>
+				<li class="nav-item d-inline">
+					<a class="nav-link" href="{{ route('admin.posts.create') }}">
+						<i class="far fa-plus-square"></i> Nuovo Post
+					</a>
+				</li>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
 					<span class="navbar-toggler-icon"></span>
 				</button>
