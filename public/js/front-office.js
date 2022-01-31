@@ -109,6 +109,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {}
@@ -1262,8 +1264,10 @@ var staticRenderFns = [
         _c("i", { staticClass: "d-block fas fa-tools text-danger" }),
       ]),
       _vm._v(" "),
-      _c("a", { staticClass: "btn btn-primary", attrs: { href: "/" } }, [
-        _vm._v("Back to Administration Panel"),
+      _c("div", { staticClass: "d-flex justify-content-center mt-5" }, [
+        _c("a", { staticClass: "btn btn-primary", attrs: { href: "/" } }, [
+          _vm._v("Back to Administration Panel"),
+        ]),
       ]),
     ])
   },

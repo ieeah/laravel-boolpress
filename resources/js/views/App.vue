@@ -8,7 +8,9 @@
 			<i class="d-block fas fa-tools text-danger"></i>
 		</div>
 
-		<a href="/" class="btn btn-primary">Back to Administration Panel</a>
+		<div class="d-flex justify-content-center mt-5">
+			<a href="/" class="btn btn-primary">Back to Administration Panel</a>
+		</div>
 	</div>
 </template>
 
@@ -46,5 +48,7 @@ export default {
 		width: 10%;
 		margin-top: 10rem;
 	}
+
+
 	
 </style>
