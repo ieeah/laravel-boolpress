@@ -3,6 +3,13 @@
 @section('content')
 	<div class="container">
 		<h2 class="mb-3">Posts Archive</h2>
+
+		@if (session('deleted'))
+			<div class="alert alert-success">
+				<strong>{{session('deleted')}}</strong>
+				succesfully deleted.
+			</div>
+		@endif
 		@if ($posts->isEmpty())
 			<h2>No posts have been found</h2>
 		@else
@@ -28,9 +35,9 @@
 							<a href="{{ route('admin.posts.edit', $post->id) }}">EDIT</a>
 						</td>
 						<td>
-							<form action="">
+							<form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST">
 								@csrf @method('DELETE')
-								<input type="submit" value="DELETE">
+								<input class="fw-bold text-danger" type="submit" value="DELETE">
 							</form>
 						</td>
 					</tr>
