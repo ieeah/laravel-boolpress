@@ -2,6 +2,7 @@
 
 @section('content')
 	<div class="container">
+		<h2 class="mb-3">Posts Archive</h2>
 		@if ($posts->isEmpty())
 			<h2>No posts have been found</h2>
 		@else
@@ -20,9 +21,18 @@
 						<td>{{ $post->id }}</td>
 						<td>{{ $post->title }}</td>
 						<td>{{ $post->author }}</td>
-						<td>show</td>
-						<td>Edit</td>
-						<td>Delete</td>
+						<td>
+							<a href="{{route('admin.posts.show', $post->id)}}">SHOW</a>
+						</td>
+						<td>
+							<a href="">EDIT</a>
+						</td>
+						<td>
+							<form action="">
+								@csrf @method('DELETE')
+								<input type="submit" value="DELETE">
+							</form>
+						</td>
 					</tr>
 					@endforeach
 				</tbody>
