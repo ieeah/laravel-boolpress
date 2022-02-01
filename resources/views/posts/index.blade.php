@@ -5,7 +5,7 @@
 		<h2 class="mb-3">Posts Archive</h2>
 
 		@if (session('deleted'))
-			<div class="alert alert-success">
+			<div class="alert alert-success animation">
 				<strong>{{session('deleted')}}</strong>
 				succesfully deleted.
 			</div>

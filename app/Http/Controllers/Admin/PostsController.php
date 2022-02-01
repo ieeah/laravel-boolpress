@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Post;
 
 class PostsController extends Controller
@@ -40,7 +41,7 @@ class PostsController extends Controller
 	{
 		$new_post = new Post;
 		$data = $request->all();
-
+		$data['slug'] = $this->createSlug($data['title']);
 		$new_post->fill($data);
 		$new_post->save();
 		return redirect()->route('admin.posts.show', $new_post->id);
@@ -52,9 +53,9 @@ class PostsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($id)
+	public function show(Post $post)
 	{
-		$post = Post::find($id);
+		// $post = Post::find($id);
 		return view('posts.show', compact('post'));
 	}
 
@@ -64,9 +65,9 @@ class PostsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Post $post)
 	{
-		$post = Post::find($id);
+		// $post = Post::find($id);
 
 		return view('posts.edit', compact('post'));
 	}
@@ -99,5 +100,19 @@ class PostsController extends Controller
 		$post->delete();
 
 		return redirect()->route('admin.posts.index')->with('deleted', $post->title);
+	}
+
+	protected function createSlug($title) {
+
+		$new_slug = Str::slug($title, '-');
+		$old_slug = $new_slug;
+		$count = 1;
+
+		while (Post::where('slug', $new_slug)->first()) {
+			$new_slug = $old_slug . $count;
+			$count++;
+		}
+
+		return $new_slug;
 	}
 }

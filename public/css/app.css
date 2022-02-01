@@ -10019,3 +10019,31 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.animation {
+  -webkit-animation: blink 1s ease-in-out 0s 3;
+          animation: blink 1s ease-in-out 0s 3;
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
