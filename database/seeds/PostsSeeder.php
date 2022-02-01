@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Faker\Generator as faker;
+use Illuminate\Support\Str;
 use App\Post;
 
 class PostsSeeder extends Seeder
@@ -18,6 +19,7 @@ class PostsSeeder extends Seeder
 			$new_post->title = $faker->words(3, true);
 			$new_post->author = $faker->userName();
 			$new_post->content = $faker->text(100);
+			$new_post->slug = Str::slug($new_post->title, '-');
 			$new_post->save();
 		}
 	}
