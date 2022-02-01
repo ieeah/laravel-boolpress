@@ -16,7 +16,7 @@ class PostsController extends Controller
 	 */
 	public function index()
 	{
-		$posts = Post::all();
+		$posts = Post::paginate(5);
 
 		return view('posts.index', compact('posts'));
 	}
@@ -39,6 +39,7 @@ class PostsController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$request->validate($this->validateRules(), $this->validateMessages());
 		$new_post = new Post;
 		$data = $request->all();
 		$data['slug'] = $this->createSlug($data['title']);
@@ -79,6 +80,7 @@ class PostsController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		$request->validate($this->validateRules(), $this->validateMessages());
 		$data = $request->all();
 		$data['slug'] = $this->createSlug($data['title']);
 		$edited = Post::find($id);
@@ -113,5 +115,20 @@ class PostsController extends Controller
 		}
 
 		return $new_slug;
+	}
+
+	protected function validateRules() {
+		return [
+			'title' => 'required | max:255',
+			'content' => 'required',
+			'author' => 'required | max:130',
+		];
+	}
+
+	protected function validateMessages() {
+		return [
+			'required' => 'The :attribute field is required',
+			'max' => 'Max :max characters allowed for this field'
+		];
 	}
 }
