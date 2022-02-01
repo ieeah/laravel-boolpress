@@ -53,9 +53,9 @@ class PostsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(Post $post)
+	public function show($slug)
 	{
-		// $post = Post::find($id);
+		$post = Post::where('slug', $slug)->first();
 		return view('posts.show', compact('post'));
 	}
 
@@ -67,8 +67,6 @@ class PostsController extends Controller
 	 */
 	public function edit(Post $post)
 	{
-		// $post = Post::find($id);
-
 		return view('posts.edit', compact('post'));
 	}
 
@@ -82,6 +80,7 @@ class PostsController extends Controller
 	public function update(Request $request, $id)
 	{
 		$data = $request->all();
+		$data['slug'] = $this->createSlug($data['title']);
 		$edited = Post::find($id);
 		$edited->update($data);
 
@@ -109,7 +108,7 @@ class PostsController extends Controller
 		$count = 1;
 
 		while (Post::where('slug', $new_slug)->first()) {
-			$new_slug = $old_slug . $count;
+			$new_slug = $old_slug . '-' . $count;
 			$count++;
 		}
 
