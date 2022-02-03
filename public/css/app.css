@@ -10026,10 +10026,10 @@ h3 {
 
 @-webkit-keyframes blink {
   0% {
-    display: none;
+    opacity: 0;
   }
   50% {
-    display: block;
+    opacity: 1;
   }
   100% {
     opacity: 0;
@@ -10038,10 +10038,10 @@ h3 {
 
 @keyframes blink {
   0% {
-    display: none;
+    opacity: 0;
   }
   50% {
-    display: block;
+    opacity: 1;
   }
   100% {
     opacity: 0;
