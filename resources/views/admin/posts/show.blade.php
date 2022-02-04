@@ -19,14 +19,16 @@
 			@endif
 		</div>
 
-		{{-- @if (! $post->tags->isEmpty())
+		@if (! $post->tags->isEmpty())
 			<div class="mt-4 tags">
 				<h4>tags</h4>
-				<span class="badge badge-primary">{{$tag->name}}</span>
+				@foreach ($tags as $tag)
+					<span class="badge badge-primary">{{$tag->name}}</span>
+				@endforeach
 			</div>
 		@else
 			<p>No Tags found</p>
-		@endif --}}
+		@endif
 
 		<h5 class="mt-4">
 			Post Author:

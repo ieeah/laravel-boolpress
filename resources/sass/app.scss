@@ -12,8 +12,6 @@
 	animation: blink 1s ease-in-out 0s 3 forwards;
 }
 
-// TODO - dopo aver aggiunto le funzionalità di slug al controller provare a creare un nuovo post, ed eliminarlo per vedere se funziona l'animazione
-
 @keyframes blink {
 	0% {
 		opacity: 0;

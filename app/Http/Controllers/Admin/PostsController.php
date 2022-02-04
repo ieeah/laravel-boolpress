@@ -19,9 +19,9 @@ class PostsController extends Controller
 	public function index()
 	{
 		$posts = Post::paginate(5);
-		// $tags = Tag::all();
-		// return view('admin.posts.index', compact('posts', 'tags'));
-		return view('admin.posts.index', compact('posts'));
+		$tags = Tag::all();
+		return view('admin.posts.index', compact('posts', 'tags'));
+		// return view('admin.posts.index', compact('posts'));
 	}
 
 	/**
@@ -32,9 +32,8 @@ class PostsController extends Controller
 	public function create()
 	{
 		$categories = Category::all();
-		// $tags = Tag::all();
-		// return view('admin.posts.create', compact('categories', 'tags'));
-		return view('admin.posts.create', compact('categories'));
+		$tags = Tag::all();
+		return view('admin.posts.create', compact('categories', 'tags'));
 	}
 
 	/**
@@ -46,18 +45,19 @@ class PostsController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate($this->validateRules(), $this->validateMessages());
-		$new_post = new Post;
+		$new_post = new Post();
 		$data = $request->all();
 		// Dump & Die, stampa sullo schermo il dump dei dati ed interrompe l'esecuzione del programma, in questo caso non oeffettua il salvataggio
-		// dd($data);
 		$data['slug'] = $this->createSlug($data['title']);
 		$new_post->fill($data);
 		$new_post->save();
-
+		
 		// salvataggio in tabella pivot la relazione tra post e tags
-		// if (array_key_exists('tags', $data)) {
-		// 	$new_post->tags()->attach($data['tags']);
-		// }
+		if (array_key_exists('tags', $data)) {
+			$new_post->tags()->attach($data['tags']);
+		}
+		
+		dd($data['tags']);
 
 		return redirect()->route('admin.posts.show', $new_post->slug);
 	}
@@ -70,9 +70,8 @@ class PostsController extends Controller
 	 */
 	public function show($slug)
 	{
-		
 		$post = Post::where('slug', $slug)->first();
-		// dump($post->tags());
+		dump($post->tags());
 		return view('admin.posts.show', compact('post'));
 	}
 
@@ -85,9 +84,8 @@ class PostsController extends Controller
 	public function edit(Post $post)
 	{
 		$categories = Category::all();
-		// $tags = Tag::all();
-		// return view('admin.posts.edit', compact('post', 'categories', 'tags'));
-		return view('admin.posts.edit', compact('post', 'categories'));
+		$tags = Tag::all();
+		return view('admin.posts.edit', compact('post', 'categories', 'tags'));
 	}
 
 	/**
@@ -101,17 +99,18 @@ class PostsController extends Controller
 	{
 		$request->validate($this->validateRules(), $this->validateMessages());
 		$data = $request->all();
+		dump($data);
 		$data['slug'] = $this->createSlug($data['title']);
 		$edited = Post::find($id);
 		$edited->update($data);
 
 		// verifica della presenza di tag o meno e update delle relazioni nella pivot post_tag
-		// if(array_key_exists('tags', $data)) {
-		// 	$edited->tags()->sync($data['tags']);
-		// } else {
-		// 	// il metodo detach senza parametri elimita tutte le relazioni dalla tabella pivot
-		// 	$edited->tags()->detach();
-		// }
+		if(array_key_exists('tags', $data)) {
+			$edited->tags()->sync($data['tags']);
+		} else {
+			// il metodo detach senza parametri elimina tutte le relazioni dalla tabella pivot
+			$edited->tags()->detach();
+		}
 
 		return redirect()->route('admin.posts.show', $edited->slug);
 	}
@@ -148,11 +147,11 @@ class PostsController extends Controller
 
 	protected function validateRules() {
 		return [
-			'title' => 'required | max:255',
+			'title' => 'required|max:255',
 			'content' => 'required',
-			'author' => 'required | max:130',
-			'category_id' => 'nullable | exists:categories,id',
-			'tags' => 'nullable | exists:tags,id',
+			'author' => 'required|max:130',
+			'category_id' => 'nullable|exists:categories,id',
+			'tags' => 'nullable|exists:tags,id',
 		];
 	}
 

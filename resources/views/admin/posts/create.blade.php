@@ -57,12 +57,13 @@
 				@enderror
 			</div>
 
-			{{-- <div class="mb-4">
+			<div class="mb-4">
 				<h5>Tags</h5>
+
 				@foreach ($tags as $tag)
 					<span class="d-inline-block mr-3">
-						<input type="checkbox" name="tags[]" id="tag{{$loop->iteration}}" value="{{$tag->id}}"
-							@if (in_array($tag->id, old('tags', []))) checked @endif
+						<input type="checkbox" name="tags[]" id="tag{{ $loop->iteration }}" value="{{ $tag->id }}"
+							@if(in_array($tag->id, old('tags', []))) checked @endif
 						>
 						<label for="tag{{$loop->iteration}}">
 							{{$tag->name}}
@@ -72,8 +73,7 @@
 				@error('tags')
 					<div class="text-danger">{{$message}}</div>
 				@enderror
-			</div> --}}
-			
+			</div>
 
 			<input type="submit" value="Crea nuovo post" class="mt-4 btn btn-success">
 		</form>

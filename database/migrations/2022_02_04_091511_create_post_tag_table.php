@@ -23,11 +23,10 @@ class CreatePostTagTable extends Migration
 			->onDelete('cascade'); // quando si elimina il post, viene eliminata anche la riga corrispondente nella tabella pivot
 
 			$table->unsignedBigInteger('tag_id');
-			$table->foreign('id')
+			$table->foreign('tag_id')
 			->references('id')
 			->on('tags')
 			->onDelete('cascade');
-
 		});
 	}
 
