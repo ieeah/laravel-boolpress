@@ -39,6 +39,40 @@
 					<div class="text-danger fw-bold">{{ $message }}</div>
 				@enderror
 			</div>
+
+			<div class="mb-4">
+				<label for="category_id">Select Category</label>
+				<select class="form-control" name="category_id" id="category_id">
+					<option value="">Uncategorized</option>
+					@foreach ($categories as $cat)
+						<option value="{{ $cat->id }}"
+							@if (old('category_id') == $cat->id) selected @endif
+							>
+							{{$cat->name}}
+						</option>
+					@endforeach
+				</select>
+				@error('category_id')
+					<div class="text-danger">{{$message}}</div>
+				@enderror
+			</div>
+
+			<div class="mb-4">
+				<h5>Tags</h5>
+				@foreach ($tags as $tag)
+					<span class="d-inline-block mr-3">
+						<input type="checkbox" name="tags[]" id="tag{{$loop->iteration}}" value="{{$tag->id}}"
+							@if (in_array($tag->id, old('tags', []))) checked @endif
+						>
+						<label for="tag{{$loop->iteration}}">
+							{{$tag->name}}
+						</label>
+					</span>
+				@endforeach
+				@error('tags')
+					<div class="text-danger">{{$message}}</div>
+				@enderror
+			</div>
 			
 
 			<input type="submit" value="Crea nuovo post" class="mt-4 btn btn-success">

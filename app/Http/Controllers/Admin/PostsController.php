@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Post;
+use App\Category;
+use App\Tag;
 
 class PostsController extends Controller
 {
@@ -17,8 +19,8 @@ class PostsController extends Controller
 	public function index()
 	{
 		$posts = Post::paginate(5);
-
-		return view('posts.index', compact('posts'));
+		$tags = Tag::all();
+		return view('admin.posts.index', compact('posts', 'tags'));
 	}
 
 	/**
@@ -28,7 +30,9 @@ class PostsController extends Controller
 	 */
 	public function create()
 	{
-		return view('posts.create');
+		$categories = Category::all();
+		$tags = Tag::all();
+		return view('admin.posts.create', compact('categories', 'tags'));
 	}
 
 	/**
@@ -42,10 +46,17 @@ class PostsController extends Controller
 		$request->validate($this->validateRules(), $this->validateMessages());
 		$new_post = new Post;
 		$data = $request->all();
+		// Dump & Die, stampa sullo schermo il dump dei dati ed interrompe l'esecuzione del programma, in questo caso non oeffettua il salvataggio
+		// dd($data);
 		$data['slug'] = $this->createSlug($data['title']);
 		$new_post->fill($data);
 		$new_post->save();
-		return redirect()->route('admin.posts.show', $new_post->id);
+
+		// salvataggio in tabella pivot la relazione tra post e tags
+		if (array_key_exists('tags', $data)) {
+			$new_post->tags()->attach($data['tags']);
+		}
+		return redirect()->route('admin.posts.show', $new_post->slug);
 	}
 
 	/**
@@ -56,8 +67,10 @@ class PostsController extends Controller
 	 */
 	public function show($slug)
 	{
+		
 		$post = Post::where('slug', $slug)->first();
-		return view('posts.show', compact('post'));
+		dump($post->tags());
+		return view('admin.posts.show', compact('post'));
 	}
 
 	/**
@@ -68,7 +81,9 @@ class PostsController extends Controller
 	 */
 	public function edit(Post $post)
 	{
-		return view('posts.edit', compact('post'));
+		$categories = Category::all();
+		$tags = Tag::all();
+		return view('admin.posts.edit', compact('post', 'categories', 'tags'));
 	}
 
 	/**
@@ -86,7 +101,15 @@ class PostsController extends Controller
 		$edited = Post::find($id);
 		$edited->update($data);
 
-		return redirect()->route('admin.posts.show', $id);
+		// verifica della presenza di tag o meno e update delle relazioni nella pivot post_tag
+		if(array_key_exists('tags', $data)) {
+			$edited->tags()->sync($data['tags']);
+		} else {
+			// il metodo detach senza parametri elimita tutte le relazioni dalla tabella pivot
+			$edited->tags()->detach();
+		}
+
+		return redirect()->route('admin.posts.show', $edited->slug);
 	}
 
 	/**
@@ -99,6 +122,8 @@ class PostsController extends Controller
 	{
 		$post = Post::find($id);
 		$post->delete();
+
+		// $post->tags()->detach(); (dovremmo scriverlo se non avessimo utilizzato il metodo onDelete nella migration di creazione della tabella pivot)
 
 		return redirect()->route('admin.posts.index')->with('deleted', $post->title);
 	}
@@ -122,13 +147,16 @@ class PostsController extends Controller
 			'title' => 'required | max:255',
 			'content' => 'required',
 			'author' => 'required | max:130',
+			'category_id' => 'nullable | exists:categories,id',
+			'tags' => 'nullable | exists:tags,id',
 		];
 	}
 
 	protected function validateMessages() {
 		return [
 			'required' => 'The :attribute field is required',
-			'max' => 'Max :max characters allowed for this field'
+			'max' => 'Max :max characters allowed for this field',
+			'category_id.exists' => 'The selected category doesn\'t exists',
 		];
 	}
 }

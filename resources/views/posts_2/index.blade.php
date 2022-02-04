@@ -19,6 +19,7 @@
 						<td>ID</td>
 						<td>Title</td>
 						<td>Author</td>
+						<td>Cat</td>
 						<td colspan="3">Actions</td>
 					</tr>
 				</thead>
@@ -28,6 +29,11 @@
 						<td>{{ $post->id }}</td>
 						<td>{{ $post->title }}</td>
 						<td>{{ $post->author }}</td>
+						<td>@if ($post->category)
+							{{$post->category->name}}
+						@else
+							<p>NULL</p>
+						@endif</td>
 						<td>
 							<a href="{{route('admin.posts.show', $post->slug)}}">SHOW</a>
 						</td>
@@ -46,5 +52,25 @@
 			</table>
 			{{ $posts->links() }}
 		@endif
+
 	</div>
+	<div class="container">
+		<h2>Posts by tag</h2>
+		@foreach ($tags as $tag)
+			<h3>{{$tag->name}}</h3>
+			@if ($tag->posts->isEmpty())
+				<p>No posts found</p>
+			@else
+				<ul>
+				@foreach ($tag->posts as $post)
+					<li>
+						<a href="{{route('admin.posts.show', $post->slug)}}">{{$post->title}}</a>
+					</li>
+				@endforeach
+			</ul>
+			@endif
+			
+		@endforeach
+	</div>
+	
 @endsection

@@ -9,6 +9,25 @@
 		</h4>
 		<div>{{ $post->title }}</div>
 
+
+		<div class="category">
+			<span> <strong>Category:</strong> </span>
+			@if ($post->category)
+				<span>{{$post->category->name}}</span>
+			@else
+				<span>Uncategorized</span>
+			@endif
+		</div>
+
+		@if (! $post->tags->isEmpty())
+			<div class="mt-4 tags">
+				<h4>tags</h4>
+				<span class="badge badge-primary">{{$tag->name}}</span>
+			</div>
+		@else
+			<p>No Tags found</p>
+		@endif
+
 		<h5 class="mt-4">
 			Post Author:
 		</h5>
