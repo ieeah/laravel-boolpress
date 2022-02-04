@@ -19,8 +19,9 @@ class PostsController extends Controller
 	public function index()
 	{
 		$posts = Post::paginate(5);
-		$tags = Tag::all();
-		return view('admin.posts.index', compact('posts', 'tags'));
+		// $tags = Tag::all();
+		// return view('admin.posts.index', compact('posts', 'tags'));
+		return view('admin.posts.index', compact('posts'));
 	}
 
 	/**
@@ -31,8 +32,9 @@ class PostsController extends Controller
 	public function create()
 	{
 		$categories = Category::all();
-		$tags = Tag::all();
-		return view('admin.posts.create', compact('categories', 'tags'));
+		// $tags = Tag::all();
+		// return view('admin.posts.create', compact('categories', 'tags'));
+		return view('admin.posts.create', compact('categories'));
 	}
 
 	/**
@@ -53,9 +55,10 @@ class PostsController extends Controller
 		$new_post->save();
 
 		// salvataggio in tabella pivot la relazione tra post e tags
-		if (array_key_exists('tags', $data)) {
-			$new_post->tags()->attach($data['tags']);
-		}
+		// if (array_key_exists('tags', $data)) {
+		// 	$new_post->tags()->attach($data['tags']);
+		// }
+
 		return redirect()->route('admin.posts.show', $new_post->slug);
 	}
 
@@ -69,7 +72,7 @@ class PostsController extends Controller
 	{
 		
 		$post = Post::where('slug', $slug)->first();
-		dump($post->tags());
+		// dump($post->tags());
 		return view('admin.posts.show', compact('post'));
 	}
 
@@ -82,8 +85,9 @@ class PostsController extends Controller
 	public function edit(Post $post)
 	{
 		$categories = Category::all();
-		$tags = Tag::all();
-		return view('admin.posts.edit', compact('post', 'categories', 'tags'));
+		// $tags = Tag::all();
+		// return view('admin.posts.edit', compact('post', 'categories', 'tags'));
+		return view('admin.posts.edit', compact('post', 'categories'));
 	}
 
 	/**
@@ -102,12 +106,12 @@ class PostsController extends Controller
 		$edited->update($data);
 
 		// verifica della presenza di tag o meno e update delle relazioni nella pivot post_tag
-		if(array_key_exists('tags', $data)) {
-			$edited->tags()->sync($data['tags']);
-		} else {
-			// il metodo detach senza parametri elimita tutte le relazioni dalla tabella pivot
-			$edited->tags()->detach();
-		}
+		// if(array_key_exists('tags', $data)) {
+		// 	$edited->tags()->sync($data['tags']);
+		// } else {
+		// 	// il metodo detach senza parametri elimita tutte le relazioni dalla tabella pivot
+		// 	$edited->tags()->detach();
+		// }
 
 		return redirect()->route('admin.posts.show', $edited->slug);
 	}

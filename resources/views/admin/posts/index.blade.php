@@ -54,7 +54,7 @@
 		@endif
 
 	</div>
-	<div class="container">
+	{{-- <div class="container">
 		<h2>Posts by tag</h2>
 		@foreach ($tags as $tag)
 			<h3>{{$tag->name}}</h3>
@@ -71,6 +71,6 @@
 			@endif
 			
 		@endforeach
-	</div>
+	</div> --}}
 	
 @endsection
