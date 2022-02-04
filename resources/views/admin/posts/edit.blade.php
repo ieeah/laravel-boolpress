@@ -48,7 +48,7 @@
 							{{-- va bene per il create ma per l'edit va messo così come sotto --}}
 							@if ($errors->any() && in_array($tag->id, old('tags')))
 								checked
-								@elseif (! $errors->any() && $post->tags->contains($tag->id))
+							@elseif (! $errors->any() && $post->tags->contains($tag->id))
 								checked
 							@endif
 						>

@@ -22,7 +22,7 @@
 		@if (! $post->tags->isEmpty())
 			<div class="mt-4 tags">
 				<h4>tags</h4>
-				@foreach ($tags as $tag)
+				@foreach ($post->tags as $tag)
 					<span class="badge badge-primary">{{$tag->name}}</span>
 				@endforeach
 			</div>
