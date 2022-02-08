@@ -1,54 +1,93 @@
 <template>
 	<div class="container py-5">
-		<div class="title">
-			<h1>Work in Progress</h1>
-			<h2>Site under construction</h2>
-		</div>
-		<div class="icon">
-			<i class="d-block fas fa-tools text-danger"></i>
-		</div>
+		<h1>Our Blog</h1>
+		<div v-if="posts">
+			<article v-for="post in posts" :key="`post_${post.id}`">
+				<h2>{{post.title}}</h2>
+				<p class="created_at">{{formatDate(post.created_at)}}</p>
+				<p class="content">
+					{{getExcerpt(post.content, 20)}}
+				</p>
+			</article>
 
-		<div class="d-flex justify-content-center mt-5">
-			<a href="/" class="btn btn-primary">Back to Administration Panel</a>
+			<button @click="getPosts(pagination.current - 1 )" 
+			:disabled="pagination.current === 1" class="btn btn-primary mr-3">
+				prev
+			</button>
+
+			<button
+			v-for="i in pagination.last"
+			:key="`page_${i}`"
+			@click="getPosts(i)"
+			class="btn mr-3"
+			:class="pagination.current === i ? 'btn-outline-primary' : 'btn-outline-secondary'">
+				{{ i }}
+			</button>
+
+			<button @click="getPosts(pagination.current + 1)"
+			:disabled="pagination.current === pagination.last" class="btn btn-primary mr-3">
+				next
+			</button>
+
+			
 		</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
 	name: 'App',
 	components: {},
+	data() {
+		return {
+			posts: null,
+			pagination: null,
+		}
+	},
+	created() {
+		this.getPosts();
+	},
+	methods: {
+		getPosts(page = 1) {
+			// console.log('get posts from API');
+			axios.get(`http://127.0.0.1:8000/api/posts?page=${page}`)
+			.then(response => {
+
+				// senza paginazione
+				// this.posts = response.data;
+
+				// con paginazione
+				this.posts = response.data.data;
+				console.log(this.posts);
+				console.log(response);
+				this.pagination = {
+					current: response.data.current_page,
+					last: response.data.last_page,
+				};
+				console.log(this.pagination);
+			});
+		},
+		getExcerpt(text, maxLength) {
+			if (text.length > maxLength) {
+				return text.substr(0, maxLength) + '...';
+			}
+
+			return text;
+
+		},
+		formatDate(postDate) {
+			// conversione della data da stringa a formato data di Js
+			const date = new Date(postDate);
+
+			const formatted = new Intl.DateTimeFormat('it-IT').format(date);
+
+			return formatted;
+		},
+	},
 }
 </script>
 
 <style lang="scss">
-	.title {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		transform: translateX(-100px);
-		h1, h2 {
-			width: min-content;
-		}
-		h1 {
-			text-align: right;
-			padding-right: 2rem;
-			border-right: 3px solid black;
-			font-size: 90px;
-		}
-		h2 {
-			padding-left: 2rem;
-		}
-		
-	}
-	
-	i {
-		font-size: 100px;
-		margin-inline: auto;
-		width: 10%;
-		margin-top: 10rem;
-	}
 
-
-	
 </style>

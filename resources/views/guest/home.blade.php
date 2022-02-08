@@ -1,17 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-	<div class="container">
-		<h1>guest page</h1>
-		<h2>Page under construction</h2>
-		<div id="root">
-			
-		</div>
-
-		<script src="{{ asset('js/front-office.js') }}"></script>
-	</div>
-@endsection --}}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

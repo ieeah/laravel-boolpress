@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// le URL che definiamo qui vengono sempre anticipate da dominio/api/
+
+// TEST ROUTE
+// Route::get('/test', function() {
+
+ 	// come al solito è più comodo gestire la logica in un controller e non qui
+// 	return response()->json([
+// 		'clients' => ['paolo', 'giorgio', 'marta'],
+// 		'lorem' => 'ipsum',
+// 	]);
+// });
+
+Route::namespace('Api')
+	->group(function () {
+		Route::get('/posts', 'PostController@index');
 });
