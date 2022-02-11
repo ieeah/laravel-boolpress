@@ -8,6 +8,10 @@
 			Post title:
 		</h4>
 		<div>{{ $post->title }}</div>
+		<h6>created: {{ $post->created_at->format('l d/m/Y') }}</h6>
+		<h6>created: {{ $post->created_at->isoFormat('dddd DD/MM/YYYY') }}</h6>
+		<h6>creato {{ $post->created_at->diffForHumans() }}</h6>
+		<h6>modificato {{ $post->updated_at->diffForHumans() }}</h6>
 
 
 		<div class="category">

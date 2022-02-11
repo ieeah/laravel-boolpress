@@ -71,7 +71,6 @@ class PostsController extends Controller
 	public function show($slug)
 	{
 		$post = Post::where('slug', $slug)->first();
-		dump($post->tags());
 		return view('admin.posts.show', compact('post'));
 	}
 
