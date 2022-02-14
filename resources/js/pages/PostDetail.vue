@@ -4,6 +4,7 @@
 		<div v-if="post">
 			<h2>{{post.title}}</h2>
 			<h3 v-if="post.category">category: {{post.category.name}}</h3>
+			<h3 v-else >Uncategorized</h3>
 
 			<!-- <h4 v-for="tag in post.tags"
 			class="badge badge-primary mr-2"
@@ -12,6 +13,10 @@
 			</h4> -->
 
 			<Tags class="mb-5" :list="post.tags"/>
+
+			<figure v-if="post.cover">
+				<img :src="post.cover" :alt="post.title">
+			</figure>
 
 			<p>
 				{{post.content}}

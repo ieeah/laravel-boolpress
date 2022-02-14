@@ -33,6 +33,8 @@ class PostController extends Controller
 
 		if(! $post) {
 			$post['not_found'] = true;
+		} elseif($post->cover) {
+			$post->cover = url('storage/' . $post->cover);
 		}
 
 		return response()->json($post);

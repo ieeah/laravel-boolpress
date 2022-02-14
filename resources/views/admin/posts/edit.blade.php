@@ -4,7 +4,7 @@
 	<div class="container">
 		<h2><strong>{{ $post->title }}</strong> editing</h2>
 
-		<form class="d-flex flex-column" action="{{route('admin.posts.update', $post->id)}}" method="post">
+		<form class="d-flex flex-column" action="{{route('admin.posts.update', $post->id)}}" method="post" enctype="multipart/form-data">
 			@csrf @method('PATCH')
 			<label for="title">Edit Title</label>
 			<input type="text" name="title" id="title" value="{{ $post->title }}">
@@ -18,11 +18,22 @@
 				<div class="text-danger">{{$message}}</div>
 			@enderror
 
-			<label for="title">Edit Title</label>
+			<label for="title">Edit Content</label>
 			<textarea name="content" id="content" cols="30" rows="10">{{ $post->content }}</textarea>
 			@error('content')
 				<div class="text-danger">{{$message}}</div>
 			@enderror
+
+			@if ($post->cover)
+				<div class="mb-4">
+					<span>Post cover:</span>
+					<span>
+						<img src="{{asset('storage/' . $post->cover)}}" alt="" width="150px">
+					</span>
+				</div>
+			@endif
+			<label for="cover">Update post cover</label>
+			<input type="file" name="cover" id="cover">
 
 			<label for="category_id">Edit Category</label>
 			<select class="form-control mb-4" name="category_id" id="category_id">

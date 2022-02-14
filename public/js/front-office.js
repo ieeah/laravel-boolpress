@@ -2172,6 +2172,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3065,12 +3070,20 @@ var render = function () {
                 ? _c("h3", [
                     _vm._v("category: " + _vm._s(_vm.post.category.name)),
                   ])
-                : _vm._e(),
+                : _c("h3", [_vm._v("Uncategorized")]),
               _vm._v(" "),
               _c("Tags", {
                 staticClass: "mb-5",
                 attrs: { list: _vm.post.tags },
               }),
+              _vm._v(" "),
+              _vm.post.cover
+                ? _c("figure", [
+                    _c("img", {
+                      attrs: { src: _vm.post.cover, alt: _vm.post.title },
+                    }),
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("p", [
                 _vm._v("\n\t\t\t" + _vm._s(_vm.post.content) + "\n\t\t"),
@@ -19100,7 +19113,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_About__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/About */ "./resources/js/pages/About.vue");
 /* harmony import */ var _pages_Blog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/Blog */ "./resources/js/pages/Blog.vue");
 /* harmony import */ var _pages_PostDetail_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/PostDetail.vue */ "./resources/js/pages/PostDetail.vue");
-/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/NotFound */ "./resources/js/pages/NotFound.vue");
+/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/NotFound */ "./resources/js/pages/NotFound.vue");
 // dichiarazione dipendenze
 
  // componenti per rotta
@@ -19135,7 +19148,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   }, {
     path: '*',
     name: '404',
-    component: _pages_NotFound__WEBPACK_IMPORTED_MODULE_7__["default"]
+    component: _pages_NotFound__WEBPACK_IMPORTED_MODULE_6__["default"]
   }]
 }); // esportazione delle rotte per il loro utilizzo in altri file
 

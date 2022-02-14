@@ -39,6 +39,12 @@
 		</h5>
 		<div>{{ $post->author }}</div>
 
+	@if ($post->cover)
+		<div class="mt-4">
+			<img src="{{asset('storage/' . $post->cover)}}" alt="{{$post->title}}">
+		</div>
+	@endif
+
 		<h4 class="mt-4">
 			Post content:
 		</h4>

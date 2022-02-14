@@ -14,7 +14,7 @@
 			</div>
 		@endif
 
-		<form class="d-flex flex-column" action="{{ route('admin.posts.store') }}" method="POST">
+		<form class="d-flex flex-column" action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
 			@csrf
 			<div class="mb-4">
 				<label for="title">Edit Title</label>
@@ -71,6 +71,15 @@
 					</span>
 				@endforeach
 				@error('tags')
+					<div class="text-danger">{{$message}}</div>
+				@enderror
+			</div>
+
+			{{-- post cover image --}}
+			<div class="mb-4">
+				<label for="cover">Cover Image</label>
+				<input class="form-control-file" type="file" name="cover" id="cover">
+				@error('cover')
 					<div class="text-danger">{{$message}}</div>
 				@enderror
 			</div>

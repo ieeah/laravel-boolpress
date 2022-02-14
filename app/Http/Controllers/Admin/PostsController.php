@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
 use App\Category;
 use App\Tag;
@@ -49,6 +50,15 @@ class PostsController extends Controller
 		$data = $request->all();
 		// Dump & Die, stampa sullo schermo il dump dei dati ed interrompe l'esecuzione del programma, in questo caso non oeffettua il salvataggio
 		$data['slug'] = $this->createSlug($data['title']);
+
+		// aggiunta della cover se presente
+		if(array_key_exists('cover', $data)) {
+			// salva immagine in storage e ottenere la path del file caricato da salvare a DB
+			$img_path = Storage::put('posts-covers', $data['cover']);
+			// salvata l'immagine nella cartella di storage, ci viene restituita la path del file che utilizzeremo per sovrascrivere il $data
+			$data['cover'] = $img_path;
+		}
+
 		$new_post->fill($data);
 		$new_post->save();
 		
@@ -57,7 +67,6 @@ class PostsController extends Controller
 			$new_post->tags()->attach($data['tags']);
 		}
 		
-		dd($data['tags']);
 
 		return redirect()->route('admin.posts.show', $new_post->slug);
 	}
@@ -98,9 +107,20 @@ class PostsController extends Controller
 	{
 		$request->validate($this->validateRules(), $this->validateMessages());
 		$data = $request->all();
-		dump($data);
 		$data['slug'] = $this->createSlug($data['title']);
 		$edited = Post::find($id);
+
+		// controlliamo se è stata modificata l'immagine o meno
+		if(array_key_exists('cover', $data)) {
+			// rimozione della vecchia cover se presente che
+			if($edited->cover) {
+				Storage::delete($edited->cover);
+			}
+
+			// aggiunta nuova immagine che
+			$data['cover'] = Storage::put('posts-covers', $data['cover']);
+		}
+
 		$edited->update($data);
 
 		// verifica della presenza di tag o meno e update delle relazioni nella pivot post_tag
@@ -127,6 +147,10 @@ class PostsController extends Controller
 
 		// $post->tags()->detach(); (dovremmo scriverlo se non avessimo utilizzato il metodo onDelete nella migration di creazione della tabella pivot)
 
+		if($post->cover){
+			Storage::delete($post->cover);
+		}
+
 		return redirect()->route('admin.posts.index')->with('deleted', $post->title);
 	}
 
@@ -151,6 +175,7 @@ class PostsController extends Controller
 			'author' => 'required|max:130',
 			'category_id' => 'nullable|exists:categories,id',
 			'tags' => 'nullable|exists:tags,id',
+			'cover' => 'nullable|file|mimes:jpg,bmp,png',
 		];
 	}
 
@@ -159,6 +184,7 @@ class PostsController extends Controller
 			'required' => 'The :attribute field is required',
 			'max' => 'Max :max characters allowed for this field',
 			'category_id.exists' => 'The selected category doesn\'t exists',
+			'cover' => 'The :attribute should be a jpg/bmp/png file',
 		];
 	}
 }
