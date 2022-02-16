@@ -7,6 +7,7 @@ import Home from './pages/home';
 import About from './pages/About';
 import Blog from './pages/Blog';
 import PostDetail from './pages/PostDetail.vue';
+import ContactForm from './pages/ContactForm';
 import NotFound from './pages/NotFound';
 
 // attivazione del router
@@ -36,6 +37,11 @@ const router = new VueRouter({
 			path: '/blog/:slug',
 			name: 'post-detail',
 			component: PostDetail,
+		},
+		{
+			path: '/contacts',
+			name: 'contacts',
+			component: ContactForm,
 		},
 		{
 			path: '*',

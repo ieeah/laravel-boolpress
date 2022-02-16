@@ -31,4 +31,6 @@ Route::namespace('Api')
 		Route::get('/posts', 'PostController@index');
 
 		Route::get('/posts/{slug}', 'PostController@show');
+
+		Route::post('/contacts', 'ContactsController@store');
 });
